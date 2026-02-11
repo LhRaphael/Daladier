@@ -1,0 +1,56 @@
+Agora que você tem o script instalado faça o seguinte, caso ainda não tenha feito
+
+ - Dê a permissão de execução ao script com "sudo chmod +x script.sh"
+ 
+ - Crie uma aba no terminal e renomei ela para "servidor"
+ 
+ - Nessa aba conecte-se ao seu respectivo servidor proxmox via ssh Ex. ssh djr@192.168.0.117
+
+ - Rode o comando "curl -I localhost" para saber qual servidor está rodando (nginx ou apache)
+
+ - Rode o comando "sysctl net.ipv4.tcp_available_congestion_control" para saber qual algorimo tcp o servidor está usando
+
+Uma vez tendo as respectivas informações, volte a aba principal, onde DEVE estar localizado o arquivo "script.sh"
+ - Crie uma subpasta para guardar as medições que serão feitas, pode chamar de "medicoes-quic" ou do que preferir
+ - mova o arquivo "script.sh" para essa pasta 
+ - entre em super usuario "sudo su" <-- isso é obrigatório, apenas o sudo não funciona
+ - inicie o arquivo de script e preencha as informações que ele pede
+
+O arquivo irá pedir o nome do servidor que está usando e o algoritmo tcp, alem do ip da maquina é claro, preencha conforme as 
+informações obtidas na aba "servidor" que DEVE estar no terminal ao lado da aba onde o script está localizado
+
+Quando uma medição acabar é necessário que você volte para a aba do servidor e mude o algorimo TCP para realizar as medições seguintes
+e eventualmente deve mudar o servidor também para realizar as medições com outro servidor
+
+PARA MUDAR O ALGORITMO NA ABA SERVIDOR
+sudo sysctl -w net.ipv4.tcp_congestion_control=nome_do_algoritmo_em_minusculo
+
+
+PARA MUDAR O SERVIDOR NA ABA SERVIDOR:
+
+sudo systemctl stop <servidor_atual>
+
+sudo systemctl start <outro_servidor>
+
+
+*Para finalizar, é importante lembrar que mesmo ccom script ainda vai ser um trabalho chato que só, e fique mudando as configurações 
+do servidor na aba "servidor" sempre que terminar uma medição na aba principal e renomei as proximas medições com as respectivas configurações
+alteradas, boa sorte :)
+
+LISTA DOS ALGORITMOS:
+
+CUBIC
+Reno
+BBR
+BIC
+Westwood
+Veno
+Hybla
+HighSpeed
+H-TCP
+Scalable
+YeAH
+Illinois
+Vegas
+CDG
+LP
